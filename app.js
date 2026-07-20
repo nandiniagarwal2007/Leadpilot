@@ -1,13 +1,15 @@
-require("dotenv").config();
+const express = require("express");
+const path = require("path");
 
-const readLeads = require("./services/csvService");
+const app = express();
 
-async function start() {
+const PORT = 3000;
 
-    const leads = await readLeads("./data/leads.csv");
+app.use(express.static("public"));
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "views", "index.html"));
+});
 
-    console.log(leads);
-
-}
-
-start();
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+});
