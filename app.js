@@ -1,3 +1,4 @@
+const generateEmail = require("./services/aiService");
 const express = require("express");
 const path = require("path");
 
@@ -26,6 +27,30 @@ app.post("/upload", upload.single("csvFile"), async (req, res) => {
         console.log(error);
 
         res.status(500).send("Error reading CSV");
+
+    }
+
+});
+app.post("/generate-email", express.json(), async (req, res) => {
+
+    try {
+
+        const lead = req.body;
+
+        const email = await generateEmail(lead);
+
+        res.json({
+            success: true,
+            email: email
+        });
+
+    } catch (error) {
+
+        console.log(error);
+
+        res.status(500).json({
+            success: false
+        });
 
     }
 
