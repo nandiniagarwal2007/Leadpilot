@@ -25,6 +25,10 @@ csvFile.addEventListener("change", async () => {
     const leads = await response.json();
 
     const leadsContainer = document.getElementById("leadsContainer");
+    const sendBtn = document.getElementById("sendBtn");
+
+let currentLead = null;
+let currentEmail = "";
 
 let table = `
     <table border="1" cellpadding="10" cellspacing="0">
@@ -85,5 +89,44 @@ const preview = document.getElementById("emailPreview");
 console.log(preview);
 
 preview.textContent = result.email;
+currentLead = lead;
+currentEmail = result.email;
+
+sendBtn.style.display = "inline-block";
 
 }
+sendBtn.addEventListener("click", async () => {
+
+    const response = await fetch("/send-email", {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+
+            email: currentLead.email,
+
+            subject: `Helping ${currentLead.company} Grow with AI`,
+
+            body: currentEmail
+
+        })
+
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+
+        alert("✅ Email Sent Successfully!");
+
+    } else {
+
+        alert("❌ Failed to send email.");
+
+    }
+
+});

@@ -1,3 +1,4 @@
+const sendEmail = require("./services/emailService");
 const generateEmail = require("./services/aiService");
 const express = require("express");
 const path = require("path");
@@ -42,6 +43,29 @@ app.post("/generate-email", express.json(), async (req, res) => {
         res.json({
             success: true,
             email: email
+        });
+
+    } catch (error) {
+
+        console.log(error);
+
+        res.status(500).json({
+            success: false
+        });
+
+    }
+
+});
+app.post("/send-email", express.json(), async (req, res) => {
+
+    try {
+
+        const { email, subject, body } = req.body;
+
+        await sendEmail(email, subject, body);
+
+        res.json({
+            success: true
         });
 
     } catch (error) {
