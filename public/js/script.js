@@ -1,5 +1,12 @@
+let generatedCount = 0;
+let sentCount = 0;
+
+let currentLead = null;
+let currentEmail = "";
+
 const uploadBtn = document.getElementById("uploadBtn");
 const csvFile = document.getElementById("csvFile");
+const sendBtn = document.getElementById("sendBtn");
 
 uploadBtn.addEventListener("click", () => {
     csvFile.click();
@@ -9,12 +16,9 @@ csvFile.addEventListener("change", async () => {
 
     const file = csvFile.files[0];
 
-    if (!file) {
-        return;
-    }
+    if (!file) return;
 
     const formData = new FormData();
-
     formData.append("csvFile", file);
 
     const response = await fetch("/upload", {
@@ -24,49 +28,58 @@ csvFile.addEventListener("change", async () => {
 
     const leads = await response.json();
 
+    document.getElementById("totalLeads").textContent = leads.length;
+
     const leadsContainer = document.getElementById("leadsContainer");
-    const sendBtn = document.getElementById("sendBtn");
 
-let currentLead = null;
-let currentEmail = "";
+    let table = `
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Company</th>
+                <th>Email</th>
+                <th>Industry</th>
+                <th>Employees</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+    `;
 
-let table = `
-    <table border="1" cellpadding="10" cellspacing="0">
-        <tr>
-    <th>Name</th>
-    <th>Company</th>
-    <th>Email</th>
-    <th>Industry</th>
-    <th>Employees</th>
-    <th>Action</th>
-</tr>
-`;
+    for (const lead of leads) {
 
-for (const lead of leads) {
+        table += `
+            <tr id="row-${lead.email}">
+                <td>${lead.name}</td>
+                <td>${lead.company}</td>
+                <td>${lead.email}</td>
+                <td>${lead.industry}</td>
+                <td>${lead.employees}</td>
 
-    table += `
-    <tr>
-        <td>${lead.name}</td>
-        <td>${lead.company}</td>
-        <td>${lead.email}</td>
-        <td>${lead.industry}</td>
-        <td>${lead.employees}</td>
-        <td>
-            <button
-                onclick='generateEmail(${JSON.stringify(lead)})'>
-                Generate Email
-            </button>
-        </td>
-    </tr>
-`;
-} 
-table += "</table>";
+                <td>
+                    <span id="status-${lead.email}" class="status pending">
+                        Pending
+                    </span>
+                </td>
 
-leadsContainer.innerHTML = table;
+                <td>
+                    <button onclick='generateEmail(${JSON.stringify(lead)})'>
+                        Generate Email
+                    </button>
+                </td>
+            </tr>
+        `;
+
+    }
+
+    table += "</table>";
+
+    leadsContainer.innerHTML = table;
 
 });
+
 async function generateEmail(lead) {
-    alert("Button Clicked!");
+
+    currentLead = lead;
 
     const response = await fetch("/generate-email", {
 
@@ -82,20 +95,33 @@ async function generateEmail(lead) {
 
     const result = await response.json();
 
-    console.log(JSON.stringify(result, null, 2));
+    currentEmail = result.email;
 
-const preview = document.getElementById("emailPreview");
+    document.getElementById("emailPreview").textContent = currentEmail;
 
-console.log(preview);
+    generatedCount++;
 
-preview.textContent = result.email;
-currentLead = lead;
-currentEmail = result.email;
+    document.getElementById("generatedEmails").textContent = generatedCount;
 
-sendBtn.style.display = "inline-block";
+    document.getElementById(`status-${lead.email}`).className =
+        "status generated";
+
+    document.getElementById(`status-${lead.email}`).textContent =
+        "Generated";
+
+    sendBtn.style.display = "block";
 
 }
+
 sendBtn.addEventListener("click", async () => {
+
+    if (!currentLead) {
+
+        alert("Generate an email first.");
+
+        return;
+
+    }
 
     const response = await fetch("/send-email", {
 
@@ -122,6 +148,16 @@ sendBtn.addEventListener("click", async () => {
     if (result.success) {
 
         alert("✅ Email Sent Successfully!");
+
+        sentCount++;
+
+        document.getElementById("sentEmails").textContent = sentCount;
+
+        document.getElementById(`status-${currentLead.email}`).className =
+            "status sent";
+
+        document.getElementById(`status-${currentLead.email}`).textContent =
+            "Sent";
 
     } else {
 

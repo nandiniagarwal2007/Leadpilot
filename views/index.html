@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,31 +7,59 @@
 
     <link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body>
 
-    <div class="container">
+<div class="container">
 
-        <h1>🚀 LeadPilot</h1>
+    <h1>🚀 LeadPilot</h1>
 
-        <p>AI Powered Sales Agent</p>
+    <p class="subtitle">
+        AI Powered Sales Automation Platform
+    </p>
 
-        <button id="uploadBtn">Upload CSV</button>
-        <input
-    type="file"
-    id="csvFile"
-    name="csvFile"
-    accept=".csv"
-    hidden
->
-<div id="leadsContainer"></div>
-<h2>Email Preview</h2>
+    <div class="dashboard">
 
-<pre id="emailPreview"></pre>
-<button id="sendBtn" style="display:none;">
-    Send Email
-</button>
+        <div class="card">
+            <h2 id="totalLeads">0</h2>
+            <p>Total Leads</p>
+        </div>
+
+        <div class="card">
+            <h2 id="generatedEmails">0</h2>
+            <p>Generated Emails</p>
+        </div>
+
+        <div class="card">
+            <h2 id="sentEmails">0</h2>
+            <p>Emails Sent</p>
+        </div>
 
     </div>
+
+    <button id="uploadBtn">
+        Upload CSV
+    </button>
+
+    <input
+        type="file"
+        id="csvFile"
+        accept=".csv"
+        hidden>
+
+    <div id="leadsContainer"></div>
+
+    <h2>Email Preview</h2>
+
+    <pre id="emailPreview"></pre>
+
+    <button id="sendBtn" style="display:none;">
+        📧 Send Email
+    </button>
+
+</div>
+
 <script src="/js/script.js"></script>
+
 </body>
 </html>
