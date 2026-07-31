@@ -2,6 +2,7 @@ const sendEmail = require("./services/emailService");
 const generateEmail = require("./services/aiService");
 const express = require("express");
 const path = require("path");
+const fs = require("fs");
 
 const upload = require("./middleware/upload");
 const readLeads = require("./services/csvService");
@@ -77,6 +78,46 @@ app.post("/send-email", express.json(), async (req, res) => {
         });
 
     }
+
+});
+
+
+app.get("/history", (req, res) => {
+
+    const filePath = path.join(__dirname, "logs", "campaign.csv");
+
+console.log(filePath);
+
+fs.readFile(filePath, "utf8", (err, data) => {
+
+    console.log("ERROR:", err);
+console.log("DATA:");
+console.log(data);
+
+        if (err) {
+            return res.json([]);
+        }
+
+        const lines = data.trim().split("\n");
+
+        const history = lines.map(line => {
+
+            const values = line.split(",");
+
+            return {
+                date: values[0].trim(),
+                time: values[1].trim(),
+                name: values[2].trim(),
+                company: values[3].trim(),
+                email: values[4].trim(),
+                status: values[5].trim()
+            };
+
+        });
+
+        res.json(history);
+
+    });
 
 });
 

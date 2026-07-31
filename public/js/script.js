@@ -166,3 +166,43 @@ sendBtn.addEventListener("click", async () => {
     }
 
 });
+const historyBtn = document.getElementById("historyBtn");
+
+historyBtn.addEventListener("click", async () => {
+
+    const response = await fetch("/history");
+
+    const history = await response.json();
+
+    let table = `
+        <table border="1" cellpadding="10" cellspacing="0">
+            <tr>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Name</th>
+                <th>Company</th>
+                <th>Email</th>
+                <th>Status</th>
+            </tr>
+    `;
+
+    for (const item of history) {
+
+        table += `
+            <tr>
+                <td>${item.date}</td>
+                <td>${item.time}</td>
+                <td>${item.name}</td>
+                <td>${item.company}</td>
+                <td>${item.email}</td>
+                <td>${item.status}</td>
+            </tr>
+        `;
+
+    }
+
+    table += "</table>";
+
+    document.getElementById("historyContainer").innerHTML = table;
+
+});
