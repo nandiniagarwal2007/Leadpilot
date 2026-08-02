@@ -154,3 +154,65 @@ button:hover{
 .sent{
     background:#22c55e;
 }
+.layout{
+    display:flex;
+    min-height:100vh;
+}
+
+.sidebar{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 240px;
+    height: 100vh;
+    background: #1e293b;
+    color: white;
+    padding: 30px 20px;
+}
+
+.sidebar h2{
+    margin-bottom:30px;
+}
+
+.sidebar ul{
+    list-style:none;
+    padding:0;
+}
+
+.sidebar li{
+    margin:18px 0;
+}
+
+.sidebar a{
+    color:white;
+    text-decoration:none;
+    font-size:17px;
+}
+
+.sidebar a:hover{
+    color:#60a5fa;
+}
+
+.content{
+    margin-left: 240px;
+    flex: 1;
+    padding: 40px;
+    background: #f5f7fb;
+}
+
+.sidebar a{
+    display: block;
+    color: white;
+    text-decoration: none;
+    padding: 12px 16px;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.sidebar a:hover{
+    background: #334155;
+}
+
+.sidebar a.active{
+    background: #3b82f6;
+}

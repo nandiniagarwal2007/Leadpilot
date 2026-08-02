@@ -16,6 +16,18 @@ app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "views", "index.html"));
 });
 
+app.get("/history-page", (req, res) => {
+    res.sendFile(path.join(__dirname, "views", "history.html"));
+});
+
+app.get("/analytics", (req, res) => {
+    res.sendFile(path.join(__dirname, "views", "analytics.html"));
+});
+
+app.get("/settings", (req, res) => {
+    res.sendFile(path.join(__dirname, "views", "settings.html"));
+});
+
 app.post("/upload", upload.single("csvFile"), async (req, res) => {
 
     try {
