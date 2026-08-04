@@ -166,43 +166,61 @@ sendBtn.addEventListener("click", async () => {
     }
 
 });
-const historyBtn = document.getElementById("historyBtn");
 
-historyBtn.addEventListener("click", async () => {
+    
+async function loadActivity(){
 
-    const response = await fetch("/history");
+    const response = await fetch("/recent-activity");
 
-    const history = await response.json();
+    const data = await response.json();
 
-    let table = `
-        <table border="1" cellpadding="10" cellspacing="0">
-            <tr>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Name</th>
-                <th>Company</th>
-                <th>Email</th>
-                <th>Status</th>
-            </tr>
-    `;
+    const container = document.getElementById("activityContainer");
 
-    for (const item of history) {
+    container.innerHTML = "";
 
-        table += `
-            <tr>
-                <td>${item.date}</td>
-                <td>${item.time}</td>
-                <td>${item.name}</td>
-                <td>${item.company}</td>
-                <td>${item.email}</td>
-                <td>${item.status}</td>
-            </tr>
+    data.forEach(item=>{
+
+        container.innerHTML += `
+
+        <div class="activity-item">
+
+            <i class="fa-solid fa-paper-plane"></i>
+
+            ${item.name} (${item.company}) - ${item.status}
+
+        </div>
+
         `;
+
+    });
+
+}
+
+loadActivity();
+async function loadAnalytics(){
+
+    try{
+
+        const response = await fetch("/analytics-data");
+
+        const data = await response.json();
+
+        generatedCount = data.total;
+
+        sentCount = data.sent;
+
+        document.getElementById("totalLeads").textContent = data.total;
+
+        document.getElementById("generatedEmails").textContent = generatedCount;
+
+        document.getElementById("sentEmails").textContent = sentCount;
+
+    }catch(error){
+
+        console.log(error);
 
     }
 
-    table += "</table>";
+}
 
-    document.getElementById("historyContainer").innerHTML = table;
-
-});
+loadAnalytics();

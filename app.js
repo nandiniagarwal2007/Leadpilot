@@ -1,137 +1,26 @@
-const sendEmail = require("./services/emailService");
-const generateEmail = require("./services/aiService");
+
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
+//routes
+const dashboardRoutes = require("./routes/dashboard");
+const uploadRoutes = require("./routes/upload");
+const emailRoutes = require("./routes/email");
+const historyRoutes = require("./routes/history");
+const analyticsRoutes = require("./routes/analytics");
 
-const upload = require("./middleware/upload");
-const readLeads = require("./services/csvService");
+
 
 const app = express();
 
 const PORT = 3000;
 
 app.use(express.static("public"));
-app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "views", "index.html"));
-});
-
-app.get("/history-page", (req, res) => {
-    res.sendFile(path.join(__dirname, "views", "history.html"));
-});
-
-app.get("/analytics", (req, res) => {
-    res.sendFile(path.join(__dirname, "views", "analytics.html"));
-});
-
-app.get("/settings", (req, res) => {
-    res.sendFile(path.join(__dirname, "views", "settings.html"));
-});
-
-app.post("/upload", upload.single("csvFile"), async (req, res) => {
-
-    try {
-
-        const leads = await readLeads(req.file.path);
-
-        res.json(leads);
-
-    } catch (error) {
-
-        console.log(error);
-
-        res.status(500).send("Error reading CSV");
-
-    }
-
-});
-app.post("/generate-email", express.json(), async (req, res) => {
-
-    try {
-
-        const lead = req.body;
-
-        const email = await generateEmail(lead);
-
-        res.json({
-            success: true,
-            email: email
-        });
-
-    } catch (error) {
-
-        console.log(error);
-
-        res.status(500).json({
-            success: false
-        });
-
-    }
-
-});
-app.post("/send-email", express.json(), async (req, res) => {
-
-    try {
-
-        const { email, subject, body } = req.body;
-
-        await sendEmail(email, subject, body);
-
-        res.json({
-            success: true
-        });
-
-    } catch (error) {
-
-        console.log(error);
-
-        res.status(500).json({
-            success: false
-        });
-
-    }
-
-});
-
-
-app.get("/history", (req, res) => {
-
-    const filePath = path.join(__dirname, "logs", "campaign.csv");
-
-console.log(filePath);
-
-fs.readFile(filePath, "utf8", (err, data) => {
-
-    console.log("ERROR:", err);
-console.log("DATA:");
-console.log(data);
-
-        if (err) {
-            return res.json([]);
-        }
-
-        const lines = data.trim().split("\n");
-
-        const history = lines.map(line => {
-
-            const values = line.split(",");
-
-            return {
-                date: values[0].trim(),
-                time: values[1].trim(),
-                name: values[2].trim(),
-                company: values[3].trim(),
-                email: values[4].trim(),
-                status: values[5].trim()
-            };
-
-        });
-
-        res.json(history);
-
-    });
-
-});
+app.use("/", dashboardRoutes);
+app.use("/", uploadRoutes);
+app.use("/", emailRoutes);
+app.use("/", historyRoutes);
+app.use("/", analyticsRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);

@@ -1,90 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LeadPilot</title>
 
-    <link rel="stylesheet" href="/css/style.css">
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LeadPilot Login</title>
+
+    <link rel="stylesheet" href="/css/login.css">
+
+    <link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
 </head>
 
 <body>
-    <div class="layout">
 
-    <aside class="sidebar">
-
-        <h2>🚀 LeadPilot</h2>
-
-        <ul>
-            <<li><a href="/" class="active">📊 Dashboard</a></li>
-            <li><a href="/">📤 Upload Leads</a></li>
-            <li><a href="/history-page">📜 Campaign History</a></li>
-            <li><a href="/analytics">📈 Analytics</a></li>
-            <li><a href="/settings">⚙️ Settings</a></li>
-        </ul>
-
-    </aside>
-
-    <main class="content">
-
-<div class="container">
+<div class="login-box">
 
     <h1>🚀 LeadPilot</h1>
 
-    <p class="subtitle">
-        AI Powered Sales Automation Platform
-    </p>
-
-    <div class="dashboard">
-
-        <div class="card">
-            <h2 id="totalLeads">0</h2>
-            <p>Total Leads</p>
-        </div>
-
-        <div class="card">
-            <h2 id="generatedEmails">0</h2>
-            <p>Generated Emails</p>
-        </div>
-
-        <div class="card">
-            <h2 id="sentEmails">0</h2>
-            <p>Emails Sent</p>
-        </div>
-
-    </div>
-
-    <button id="uploadBtn">
-        Upload CSV
-    </button>
-
-    
+    <p>AI Powered Sales Automation Platform</p>
 
     <input
-        type="file"
-        id="csvFile"
-        accept=".csv"
-        hidden>
+        type="text"
+        id="username"
+        placeholder="Username">
 
-    <div id="leadsContainer"></div>
-    <div id="historyContainer"></div>
+    <div class="password-box">
 
-    <h2>Email Preview</h2>
+    <input
+        type="password"
+        id="password"
+        placeholder="Password">
 
-    <pre id="emailPreview"></pre>
+    <span id="togglePassword">👁</span>
 
-    <button id="sendBtn" style="display:none;">
-        📧 Send Email
+</div>
+        <p id="errorMessage" class="error"></p>
+
+    <button id="loginBtn">
+        Login
     </button>
 
+    <button id="demoBtn" class="demo-btn">
+    Use Demo Account
+</button>
+
 </div>
 
-<script src="/js/script.js"></script>
-    </main>
-
-</div>
-
-<script src="/js/script.js"></script>
+<script src="/js/login.js"></script>
 
 </body>
 </html>

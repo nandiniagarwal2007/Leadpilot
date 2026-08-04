@@ -1,3 +1,8 @@
+/* ===================================================
+   LEADPILOT V2
+   STYLE.CSS (PART 1)
+=================================================== */
+
 *{
     margin:0;
     padding:0;
@@ -5,214 +10,831 @@
     font-family:Arial, Helvetica, sans-serif;
 }
 
+:root{
+
+    --bg:#0F172A;
+    --sidebar:#111827;
+    --card:#1E293B;
+
+    --primary:#3B82F6;
+    --secondary:#8B5CF6;
+    --success:#10B981;
+    --danger:#EF4444;
+    --warning:#F59E0B;
+
+    --text:#F8FAFC;
+    --text-secondary:#94A3B8;
+    --border:#334155;
+
+}
+
 body{
-    background:#f4f6f9;
+
+    background:var(--bg);
+    color:var(--text);
+
+}
+
+/* =====================
+      LAYOUT
+===================== */
+
+.layout{
+
+    display:flex;
+    min-height:100vh;
+
 }
 
 .container{
-    width:90%;
-    max-width:1200px;
-    margin:40px auto;
-}
 
-h1{
-    text-align:center;
-    color:#2563eb;
-    font-size:42px;
-}
-
-.subtitle{
-    text-align:center;
-    color:#666;
-    margin-top:10px;
-    margin-bottom:35px;
-}
-
-.dashboard{
-    display:flex;
-    justify-content:space-between;
-    gap:20px;
-    margin-bottom:35px;
-}
-
-.card{
-    flex:1;
-    background:white;
-    border-radius:12px;
-    padding:25px;
-    text-align:center;
-    box-shadow:0 5px 15px rgba(0,0,0,0.1);
-}
-
-.card h2{
-    text-align:center;
-    margin-top:35px;
-    margin-bottom:15px;
-}
-
-.card p{
-    margin-top:10px;
-    color:#555;
-    font-size:18px;
-}
-
-#uploadBtn{
-    display:block;
-    margin:0 auto 30px auto;
-    background:#2563eb;
-    color:white;
-    border:none;
-    padding:15px 35px;
-    font-size:18px;
-    border-radius:10px;
-    cursor:pointer;
-    transition:.3s;
-}
-
-#uploadBtn:hover{
-    background:#1d4ed8;
-}
-
-table{
     width:100%;
-    border-collapse:collapse;
-    background:white;
-    margin-top:20px;
-    box-shadow:0 5px 15px rgba(0,0,0,.08);
-}
+    max-width:1300px;
+    margin:auto;
 
-th{
-    background:#2563eb;
-    color:white;
-    padding:15px;
-}
-
-td{
-    padding:14px;
-    border-bottom:1px solid #eee;
-    text-align:center;
-}
-
-tr:hover{
-    background:#f8fbff;
-}
-
-button{
-    background:#10b981;
-    color:white;
-    border:none;
-    padding:10px 18px;
-    border-radius:8px;
-    cursor:pointer;
-}
-
-button:hover{
-    opacity:.9;
-}
-
-#emailPreview{
-    width:100%;
-    min-height:180px;
-    margin-top:20px;
-    background:white;
-    padding:20px;
-    border-radius:10px;
-    box-shadow:0 5px 15px rgba(0,0,0,.08);
-    white-space:pre-wrap;
-    line-height:1.7;
-    overflow:auto;
-}
-
-#sendBtn{
-    display:block;
-    margin:25px auto;
-    background:#ef4444;
-    font-size:18px;
-    padding:14px 30px;
-}
-
-#leadsContainer{
-    margin-top:30px;
-}
-
-.status{
-    padding:6px 12px;
-    border-radius:20px;
-    color:white;
-    font-size:14px;
-    font-weight:bold;
-}
-
-.pending{
-    background:#f59e0b;
-}
-
-.generated{
-    background:#3b82f6;
-}
-
-.sent{
-    background:#22c55e;
-}
-.layout{
-    display:flex;
-    min-height:100vh;
-}
-
-.sidebar{
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 240px;
-    height: 100vh;
-    background: #1e293b;
-    color: white;
-    padding: 30px 20px;
-}
-
-.sidebar h2{
-    margin-bottom:30px;
-}
-
-.sidebar ul{
-    list-style:none;
-    padding:0;
-}
-
-.sidebar li{
-    margin:18px 0;
-}
-
-.sidebar a{
-    color:white;
-    text-decoration:none;
-    font-size:17px;
-}
-
-.sidebar a:hover{
-    color:#60a5fa;
 }
 
 .content{
-    margin-left: 240px;
-    flex: 1;
-    padding: 40px;
-    background: #f5f7fb;
+
+    flex:1;
+
+    margin-left:240px;
+
+    padding:40px;
+
+}
+
+/* =====================
+      SIDEBAR
+===================== */
+
+.sidebar{
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:240px;
+    height:100vh;
+
+    background:var(--sidebar);
+
+    border-right:1px solid var(--border);
+
+    padding:30px 20px;
+
+}
+
+.sidebar h2{
+
+    margin-bottom:40px;
+
+    text-align:center;
+
+    color:white;
+
+}
+
+.sidebar ul{
+
+    list-style:none;
+
+}
+
+.sidebar li{
+
+    margin:15px 0;
+
 }
 
 .sidebar a{
-    display: block;
-    color: white;
-    text-decoration: none;
-    padding: 12px 16px;
-    border-radius: 8px;
-    transition: 0.3s;
+
+    display:block;
+
+    padding:14px 16px;
+
+    color:var(--text);
+
+    text-decoration:none;
+
+    border-radius:10px;
+
+    transition:.3s;
+
 }
 
 .sidebar a:hover{
-    background: #334155;
+
+    background:var(--border);
+
 }
 
 .sidebar a.active{
-    background: #3b82f6;
+
+    background:var(--primary);
+
 }
+
+.sidebar i{
+
+    width:25px;
+
+}
+
+/* =====================
+      TOPBAR
+===================== */
+
+.topbar{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:40px;
+
+}
+
+.topbar h1{
+
+    font-size:34px;
+
+    color:white;
+
+}
+
+.topbar p{
+
+    color:var(--text-secondary);
+
+    margin-top:6px;
+
+}
+
+.search input{
+
+    width:280px;
+
+    padding:12px 18px;
+
+    background:var(--card);
+
+    border:1px solid var(--border);
+
+    color:white;
+
+    border-radius:10px;
+
+    outline:none;
+
+}
+
+.profile{
+
+    display:flex;
+
+    gap:20px;
+
+    align-items:center;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+}
+
+/* =====================
+      DASHBOARD
+===================== */
+
+.dashboard{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+
+    gap:25px;
+
+    margin-bottom:40px;
+
+}
+
+.card{
+
+    padding:30px;
+
+    border-radius:20px;
+
+    color:white;
+
+    transition:.3s;
+
+    box-shadow:0 15px 30px rgba(0,0,0,.25);
+
+}
+
+.card:hover{
+
+    transform:translateY(-8px);
+
+}
+
+.leads{
+
+    background:linear-gradient(135deg,#2563EB,#1D4ED8);
+
+}
+
+.emails{
+
+    background:linear-gradient(135deg,#8B5CF6,#7C3AED);
+
+}
+
+.sent{
+
+    background:linear-gradient(135deg,#10B981,#059669);
+
+}
+
+.card .icon{
+
+    font-size:36px;
+
+    margin-bottom:18px;
+
+}
+
+.card h2{
+
+    font-size:42px;
+
+}
+
+.card p{
+
+    margin-top:10px;
+
+    font-size:18px;
+
+    opacity:.9;
+
+}
+
+/* =====================
+      UPLOAD SECTION
+===================== */
+
+.upload-section{
+
+    margin-bottom:40px;
+
+}
+
+.upload-card{
+
+    background:var(--card);
+
+    border:1px solid var(--border);
+
+    border-radius:20px;
+
+    padding:35px;
+
+    text-align:center;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.20);
+
+}
+
+.upload-icon{
+
+    font-size:55px;
+
+    color:var(--primary);
+
+    margin-bottom:20px;
+
+}
+
+.upload-card h2{
+
+    margin-bottom:10px;
+
+    font-size:28px;
+
+}
+
+.upload-card p{
+
+    color:var(--text-secondary);
+
+    margin-bottom:25px;
+
+    line-height:1.6;
+
+}
+
+/* =====================
+      BUTTONS
+===================== */
+
+button{
+
+    border:none;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+    font-size:16px;
+
+}
+
+#uploadBtn{
+
+    background:var(--primary);
+
+    color:white;
+
+    padding:14px 28px;
+
+}
+
+#uploadBtn:hover{
+
+    transform:translateY(-3px);
+
+    background:#2563EB;
+
+}
+
+#sendBtn{
+
+    display:block;
+
+    margin:35px auto;
+
+    background:var(--danger);
+
+    color:white;
+
+    padding:15px 35px;
+
+    font-size:18px;
+
+}
+
+#sendBtn:hover{
+
+    transform:translateY(-3px);
+
+}
+
+/* =====================
+      RECENT ACTIVITY
+===================== */
+
+.activity{
+
+    background:var(--card);
+
+    border-radius:20px;
+
+    padding:30px;
+
+    margin-bottom:40px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.20);
+
+}
+
+.activity h2{
+
+    margin-bottom:25px;
+
+}
+
+.activity-item{
+
+    padding:18px;
+
+    border-bottom:1px solid var(--border);
+
+    transition:.3s;
+
+}
+
+.activity-item:last-child{
+
+    border-bottom:none;
+
+}
+
+.activity-item:hover{
+
+    background:#263246;
+
+    border-radius:10px;
+
+}
+
+.activity-item i{
+
+    color:var(--primary);
+
+    margin-right:12px;
+
+}
+
+/* =====================
+      TABLE
+===================== */
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    margin-top:30px;
+
+    background:var(--card);
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.20);
+
+}
+
+th{
+
+    background:var(--primary);
+
+    color:white;
+
+    padding:18px;
+
+    text-transform:uppercase;
+
+    letter-spacing:1px;
+
+}
+
+td{
+
+    padding:18px;
+
+    text-align:center;
+
+    border-bottom:1px solid var(--border);
+
+    color:var(--text);
+
+}
+
+tr{
+
+    transition:.3s;
+
+}
+
+tr:hover{
+
+    background:#243041;
+
+}
+
+/* =====================
+      EMAIL PREVIEW
+===================== */
+
+.preview-card{
+
+    margin-top:40px;
+
+}
+
+.preview-card h2{
+
+    margin-bottom:20px;
+
+}
+
+#emailPreview{
+
+    background:var(--card);
+
+    color:var(--text);
+
+    border-radius:18px;
+
+    padding:25px;
+
+    min-height:220px;
+
+    line-height:1.8;
+
+    white-space:pre-wrap;
+
+    overflow:auto;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.20);
+
+}
+
+/* ======================================
+        STATUS BADGES
+====================================== */
+
+.status{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:8px 16px;
+
+    border-radius:30px;
+
+    color:white;
+
+    font-size:13px;
+
+    font-weight:bold;
+
+    letter-spacing:.5px;
+
+}
+
+.pending{
+
+    background:var(--warning);
+
+}
+
+.generated{
+
+    background:var(--secondary);
+
+}
+
+.sent{
+
+    background:var(--success);
+
+}
+
+/* ======================================
+        SCROLLBAR
+====================================== */
+
+::-webkit-scrollbar{
+
+    width:10px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:var(--sidebar);
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:var(--primary);
+
+    border-radius:20px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:#2563EB;
+
+}
+
+/* ======================================
+        INPUTS
+====================================== */
+
+input,
+select,
+textarea{
+
+    background:var(--card);
+
+    color:var(--text);
+
+    border:1px solid var(--border);
+
+    border-radius:10px;
+
+    padding:12px;
+
+    outline:none;
+
+}
+
+input:focus,
+textarea:focus{
+
+    border-color:var(--primary);
+
+    box-shadow:0 0 10px rgba(59,130,246,.35);
+
+}
+
+/* ======================================
+        ANIMATIONS
+====================================== */
+
+@keyframes fadeUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(20px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+.card,
+.upload-card,
+.activity,
+.preview-card,
+table{
+
+    animation:fadeUp .6s ease;
+
+}
+
+/* ======================================
+        HOVER EFFECTS
+====================================== */
+
+.card:hover,
+.upload-card:hover,
+.activity:hover{
+
+    box-shadow:0 20px 40px rgba(0,0,0,.35);
+
+}
+
+/* ======================================
+        RESPONSIVE
+====================================== */
+
+@media(max-width:1100px){
+
+    .dashboard{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+}
+
+@media(max-width:900px){
+
+    .sidebar{
+
+        width:85px;
+
+        padding:20px 10px;
+
+    }
+
+    .sidebar h2{
+
+        font-size:18px;
+
+    }
+
+    .sidebar a{
+
+        font-size:13px;
+
+        text-align:center;
+
+        padding:12px 8px;
+
+    }
+
+    .sidebar i{
+
+        display:block;
+
+        margin:0 auto 8px;
+
+        width:auto;
+
+    }
+
+    .content{
+
+        margin-left:85px;
+
+    }
+
+}
+
+@media(max-width:700px){
+
+    .topbar{
+
+        flex-direction:column;
+
+        gap:20px;
+
+        align-items:flex-start;
+
+    }
+
+    .search input{
+
+        width:100%;
+
+    }
+
+    .dashboard{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+@media(max-width:600px){
+
+    table{
+
+        display:block;
+
+        overflow-x:auto;
+
+        white-space:nowrap;
+
+    }
+
+}
+
+/* ======================================
+        FOOTER SPACING
+====================================== */
+
+.content{
+
+    padding-bottom:80px;
+
+}
+
+/* ======================================
+        LOGO
+====================================== */
+
+.sidebar h2 i{
+
+    color:var(--primary);
+
+    margin-right:10px;
+
+}
+
+/* ======================================
+        ICONS
+====================================== */
+
+.icon{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:flex-start;
+
+}
+
+/* ======================================
+        END OF FILE
+====================================== */

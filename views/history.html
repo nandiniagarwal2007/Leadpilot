@@ -1,15 +1,135 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Campaign History</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
 </head>
+
 <body>
 
-<h1> Campaign History</h1>
+<div class="layout">
 
-<div id="historyContainer"></div>
+    <!-- Sidebar -->
+
+    <aside class="sidebar">
+
+        <h2>
+            <i class="fa-solid fa-rocket"></i>
+            LeadPilot
+        </h2>
+
+        <ul>
+
+            <li>
+                <a href="/">
+                    <i class="fa-solid fa-chart-line"></i>
+                    Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="/history-page" class="active">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    Campaign History
+                </a>
+            </li>
+
+        </ul>
+
+    </aside>
+
+    <!-- Main Content -->
+
+    <main class="content">
+
+        <div class="container">
+
+            <div class="topbar">
+
+                <div>
+
+                    <h1>📜 Campaign History</h1>
+
+                    <p>View all email campaigns</p>
+
+                </div>
+
+            </div>
+
+            <!-- Summary Cards -->
+
+            <div class="dashboard">
+
+                <div class="card leads">
+
+                    <div class="icon">
+                        <i class="fa-solid fa-list"></i>
+                    </div>
+
+                    <h2 id="totalCampaigns">0</h2>
+
+                    <p>Total Campaigns</p>
+
+                </div>
+
+                <div class="card sent">
+
+                    <div class="icon">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </div>
+
+                    <h2 id="sentCount">0</h2>
+
+                    <p>Emails Sent</p>
+
+                </div>
+
+                <div class="card emails">
+
+                    <div class="icon">
+                        <i class="fa-solid fa-ban"></i>
+                    </div>
+
+                    <h2 id="skippedCount">0</h2>
+
+                    <p>Skipped</p>
+
+                </div>
+
+            </div>
+
+            <!-- Search -->
+
+            <input
+                type="text"
+                id="searchBox"
+                placeholder="🔍 Search by name or company...">
+
+            <br><br>
+
+            <!-- Table -->
+
+            <div id="historyContainer"></div>
+
+        </div>
+
+    </main>
+
+</div>
 
 <script src="/js/history.js"></script>
 
 </body>
+
 </html>
