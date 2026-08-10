@@ -6,6 +6,7 @@ const uploadRoutes = require("./routes/upload");
 const emailRoutes = require("./routes/email");
 const historyRoutes = require("./routes/history");
 const analyticsRoutes = require("./routes/analytics");
+const connectDB = require("./database/db");
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use("/", uploadRoutes);
 app.use("/", emailRoutes);
 app.use("/", historyRoutes);
 app.use("/", analyticsRoutes);
+connectDB();
 
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);

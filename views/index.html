@@ -1,56 +1,169 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>LeadPilot Login</title>
 
     <link rel="stylesheet" href="/css/login.css">
 
-    <link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    >
 </head>
 
 <body>
 
-<div class="login-box">
+    <div class="login-container">
 
-    <h1>🚀 LeadPilot</h1>
+        <!-- Left Section -->
+        <div class="login-info">
 
-    <p>AI Powered Sales Automation Platform</p>
+            <div class="brand">
+                <div class="brand-icon">
+                    <i class="fa-solid fa-rocket"></i>
+                </div>
 
-    <input
-        type="text"
-        id="username"
-        placeholder="Username">
+                <h1>LeadPilot</h1>
+            </div>
 
-    <div class="password-box">
+            <h2>AI-Powered Sales Automation</h2>
 
-    <input
-        type="password"
-        id="password"
-        placeholder="Password">
+            <p>
+                Find leads, generate personalized emails,
+                and automate your sales outreach with AI.
+            </p>
 
-    <span id="togglePassword">👁</span>
+            <div class="features">
 
-</div>
-        <p id="errorMessage" class="error"></p>
+                <div class="feature">
+                    <i class="fa-solid fa-user-group"></i>
+                    <span>Manage your leads</span>
+                </div>
 
-    <button id="loginBtn">
-        Login
-    </button>
+                <div class="feature">
+                    <i class="fa-solid fa-robot"></i>
+                    <span>Generate AI emails</span>
+                </div>
 
-    <button id="demoBtn" class="demo-btn">
-    Use Demo Account
-</button>
+                <div class="feature">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <span>Automate email campaigns</span>
+                </div>
 
-</div>
+            </div>
 
-<script src="/js/login.js"></script>
+        </div>
+
+
+        <!-- Login Card -->
+        <div class="login-section">
+
+            <div class="login-card">
+
+                <div class="login-header">
+
+                    <h2>Welcome Back 👋</h2>
+
+                    <p>
+                        Sign in to your LeadPilot account
+                    </p>
+
+                </div>
+
+
+                <!-- Username -->
+                <div class="input-group">
+
+                    <label for="username">
+                        Username
+                    </label>
+
+                    <div class="input-box">
+
+                        <i class="fa-solid fa-user"></i>
+
+                        <input
+                            type="text"
+                            id="username"
+                            placeholder="Enter your username"
+                            autocomplete="username"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- Password -->
+                <div class="input-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <div class="input-box">
+
+                        <i class="fa-solid fa-lock"></i>
+
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                        >
+
+                        <span
+                            id="togglePassword"
+                            class="toggle-password"
+                            title="Show password"
+                        >
+                            <i class="fa-solid fa-eye"></i>
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Login Button -->
+                <button id="loginBtn" class="login-btn">
+
+                    <i class="fa-solid fa-right-to-bracket"></i>
+
+                    Login
+
+                </button>
+
+
+                <!-- Demo Button -->
+                <button id="demoBtn" class="demo-btn">
+
+                    <i class="fa-solid fa-flask"></i>
+
+                    Use Demo Account
+
+                </button>
+
+
+                <div class="login-footer">
+
+                    <span>Powered by</span>
+
+                    <strong>LeadPilot AI</strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <script src="/js/login.js"></script>
 
 </body>
 </html>
+

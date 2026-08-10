@@ -1,3 +1,4 @@
+
 /* ===================================================
    LEADPILOT V2
    STYLE.CSS (PART 1)
@@ -835,6 +836,51 @@ table{
 
 }
 
-/* ======================================
-        END OF FILE
-====================================== */
+/* ============================= */
+/* EDIT LEAD MODAL */
+/* ============================= */
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background: white;
+    width: 400px;
+    max-width: 90%;
+    margin: 80px auto;
+    padding: 25px;
+    border-radius: 12px;
+}
+
+.modal-content h2 {
+    margin-bottom: 20px;
+}
+
+.modal-content label {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    margin-bottom: 8px;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+

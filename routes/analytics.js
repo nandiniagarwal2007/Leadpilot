@@ -2,49 +2,99 @@ const express = require("express");
 
 const router = express.Router();
 
-const getCampaignHistory = require("../services/historyService");
+const Lead = require("../models/Lead");
 
-router.get("/recent-activity", (req, res) => {
 
-    const history = getCampaignHistory();
+// ===============================
+// RECENT ACTIVITY
+// ===============================
 
-    const activity = history.slice().reverse().slice(0, 5);
+router.get("/recent-activity", async (req, res) => {
 
-    res.json(activity);
+    try {
+
+        const leads = await Lead.find()
+            .sort({ createdAt: -1 })
+            .limit(5);
+
+        const activity = leads.map(lead => {
+
+            let status = "PENDING";
+
+            if (lead.emailSent) {
+                status = "SENT";
+            } else if (lead.emailGenerated) {
+                status = "GENERATED";
+            }
+
+            return {
+                name: lead.name,
+                company: lead.company,
+                email: lead.email,
+                status: status,
+                time: lead.createdAt
+            };
+
+        });
+
+        res.json(activity);
+
+    } catch (error) {
+
+        console.error("❌ Recent Activity Error:", error);
+
+        res.status(500).json([]);
+
+    }
 
 });
 
-router.get("/analytics-data", (req, res) => {
 
-    const history = getCampaignHistory();
+// ===============================
+// ANALYTICS
+// ===============================
 
-    let sent = 0;
-    let skipped = 0;
+router.get("/analytics-data", async (req, res) => {
 
-    history.forEach(item => {
+    try {
 
-        if (item.status === "SENT") {
+        const total = await Lead.countDocuments();
 
-            sent++;
+        const generated = await Lead.countDocuments({
+            emailGenerated: true
+        });
 
-        } else {
+        const sent = await Lead.countDocuments({
+            emailSent: true
+        });
 
-            skipped++;
+        const skipped = total - sent;
 
-        }
+        res.json({
 
-    });
+            total,
+            generated,
+            sent,
+            skipped
 
-    res.json({
+        });
 
-        total: history.length,
+    } catch (error) {
 
-        sent,
+        console.error("❌ Analytics Error:", error);
 
-        skipped
+        res.status(500).json({
 
-    });
+            total: 0,
+            generated: 0,
+            sent: 0,
+            skipped: 0
+
+        });
+
+    }
 
 });
+
 
 module.exports = router;

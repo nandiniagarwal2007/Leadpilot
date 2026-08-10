@@ -1,55 +1,104 @@
 const loginBtn = document.getElementById("loginBtn");
+const demoBtn = document.getElementById("demoBtn");
+const togglePassword = document.getElementById("togglePassword");
+const passwordInput = document.getElementById("password");
+const usernameInput = document.getElementById("username");
+
+// ===============================
+// NORMAL LOGIN
+// ===============================
 
 loginBtn.addEventListener("click", () => {
 
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
+    const username = usernameInput.value.trim();
+    const password = passwordInput.value;
 
-    if(username === "admin" && password === "admin123"){
+    if (username === "admin" && password === "admin123") {
 
-        document.getElementById("errorMessage").textContent = "";
-        
         window.location.href = "/dashboard";
 
-    }else{
+    } else {
 
-        document.getElementById("errorMessage").textContent =
-"Invalid Username or Password";
+        showError("Invalid Username or Password");
 
     }
 
 });
-const togglePassword = document.getElementById("togglePassword");
-const passwordInput = document.getElementById("password");
+
+// ===============================
+// DEMO ACCOUNT
+// ===============================
+
+demoBtn.addEventListener("click", () => {
+
+    usernameInput.value = "admin";
+    passwordInput.value = "admin123";
+
+    // Automatically login with demo account
+    window.location.href = "/dashboard";
+
+});
+
+// ===============================
+// SHOW / HIDE PASSWORD
+// ===============================
 
 togglePassword.addEventListener("click", () => {
 
     if (passwordInput.type === "password") {
 
         passwordInput.type = "text";
-        togglePassword.textContent = "🙈";
+
+        togglePassword.innerHTML =
+            '<i class="fa-solid fa-eye-slash"></i>';
 
     } else {
 
         passwordInput.type = "password";
-        togglePassword.textContent = "👁";
+
+        togglePassword.innerHTML =
+            '<i class="fa-solid fa-eye"></i>';
 
     }
 
 });
-const demoBtn = document.getElementById("demoBtn");
 
-demoBtn.addEventListener("click", () => {
+// ===============================
+// ERROR MESSAGE
+// ===============================
 
-    document.getElementById("username").value = "admin";
-    document.getElementById("password").value = "admin123";
+function showError(message) {
 
-});
+    let errorMessage = document.getElementById("errorMessage");
+
+    if (!errorMessage) {
+
+        errorMessage = document.createElement("div");
+
+        errorMessage.id = "errorMessage";
+        errorMessage.className = "error";
+
+        loginBtn.insertAdjacentElement(
+            "afterend",
+            errorMessage
+        );
+
+    }
+
+    errorMessage.textContent = message;
+
+}
+
+// ===============================
+// ENTER KEY LOGIN
+// ===============================
 
 document.addEventListener("keydown", (event) => {
 
     if (event.key === "Enter") {
+
         loginBtn.click();
+
     }
 
 });

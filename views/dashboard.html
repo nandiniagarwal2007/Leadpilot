@@ -12,13 +12,11 @@
     <link rel="stylesheet" href="/css/style.css">
 
     <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
 </head>
 
 <body>
-
-<div class="layout">
 
     <!-- Sidebar -->
 
@@ -32,7 +30,7 @@
         <ul>
 
             <li>
-                <a href="/" class="active">
+                <a href="/dashboard" class="active">
                     <i class="fa-solid fa-chart-line"></i>
                     Dashboard
                 </a>
@@ -53,14 +51,14 @@
             </li>
 
             <li>
-                <a href="#">
+                <a href="/analytics">
                     <i class="fa-solid fa-chart-column"></i>
                     Analytics
                 </a>
             </li>
 
             <li>
-                <a href="#">
+                <a href="/settings">
                     <i class="fa-solid fa-gear"></i>
                     Settings
                 </a>
@@ -69,6 +67,7 @@
         </ul>
 
     </aside>
+
 
     <!-- Main Content -->
 
@@ -112,6 +111,7 @@
 
             </div>
 
+
             <!-- Dashboard Cards -->
 
             <div class="dashboard">
@@ -128,6 +128,7 @@
 
                 </div>
 
+
                 <div class="card emails">
 
                     <div class="icon">
@@ -139,6 +140,7 @@
                     <p>Generated Emails</p>
 
                 </div>
+
 
                 <div class="card sent">
 
@@ -154,6 +156,7 @@
 
             </div>
 
+
             <!-- Upload Section -->
 
             <section class="upload-section">
@@ -165,9 +168,7 @@
                     <h2>Import Leads</h2>
 
                     <p>
-
                         Upload your CSV file and let AI generate personalized emails.
-
                     </p>
 
                     <button id="uploadBtn">
@@ -188,27 +189,28 @@
 
             </section>
 
-                        <!-- Recent Activity -->
+
+            <!-- Recent Activity -->
 
             <div class="activity">
 
-    <h2>
+                <h2>
 
-        <i class="fa-solid fa-clock"></i>
+                    <i class="fa-solid fa-clock"></i>
 
-        Recent Activity
+                    Recent Activity
 
-    </h2>
+                </h2>
 
-    <div id="activityContainer"></div>
-
-</div>
+                <div id="activityContainer"></div>
 
             </div>
+
 
             <!-- Leads Table -->
 
             <div id="leadsContainer"></div>
+
 
             <!-- Email Preview -->
 
@@ -226,6 +228,7 @@
 
             </div>
 
+
             <!-- Send Button -->
 
             <button id="sendBtn" style="display:none;">
@@ -236,6 +239,7 @@
 
             </button>
 
+
             <!-- History -->
 
             <div id="historyContainer"></div>
@@ -244,9 +248,65 @@
 
     </main>
 
-</div>
 
-<script src="/js/script.js"></script>
+    <!-- Edit Lead Modal -->
+
+    <div id="editModal" class="modal">
+
+        <div class="modal-content">
+
+            <h2>Edit Lead</h2>
+
+            <input type="hidden" id="editLeadId">
+
+            <label>Name</label>
+
+            <input
+                type="text"
+                id="editName">
+
+            <label>Company</label>
+
+            <input
+                type="text"
+                id="editCompany">
+
+            <label>Email</label>
+
+            <input
+                type="email"
+                id="editEmail">
+
+            <label>Industry</label>
+
+            <input
+                type="text"
+                id="editIndustry">
+
+            <label>Employees</label>
+
+            <input
+                type="number"
+                id="editEmployees">
+
+            <div class="modal-buttons">
+
+                <button onclick="closeEditModal()">
+                    Cancel
+                </button>
+
+                <button onclick="saveEditedLead()">
+                    Save Changes
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="/js/script.js"></script>
 
 </body>
 
