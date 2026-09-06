@@ -10,7 +10,7 @@ const connectDB = require("./database/db");
 
 const app = express();
 
-const PORT = 3000;
+
 
 // Middleware
 app.use(express.json());          
@@ -26,4 +26,9 @@ connectDB();
 
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
+});
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server running on port ${PORT}`);
 });
