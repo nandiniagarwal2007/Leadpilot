@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const fs = require("fs");
 
 const upload = require("../middleware/upload");
 const readLeads = require("../services/csvService");
@@ -44,7 +45,6 @@ router.post("/upload", upload.single("csvFile"), async (req, res) => {
             const savedLead = await newLead.save();
 
             savedLeads.push(savedLead);
-
         }
 
         console.log(
@@ -62,8 +62,29 @@ router.post("/upload", upload.single("csvFile"), async (req, res) => {
             message: "Error uploading CSV"
         });
 
+    } finally {
+
+        // Delete temporary CSV after processing
+        if (req.file && req.file.path) {
+
+            fs.unlink(req.file.path, (error) => {
+
+                if (error) {
+                    console.error(
+                        "⚠️ Could not delete temporary CSV:",
+                        error.message
+                    );
+                } else {
+                    console.log(
+                        "🗑️ Temporary CSV deleted"
+                    );
+                }
+
+            });
+
+        }
+
     }
 
 });
-
 module.exports = router;

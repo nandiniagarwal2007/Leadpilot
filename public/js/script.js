@@ -62,6 +62,7 @@ function displayLeads(leads) {
                 <th>Industry</th>
                 <th>Employees</th>
                 <th>Status</th>
+                <th>AI Score</th>
                 <th>Action</th>
             </tr>
     `;
@@ -82,6 +83,56 @@ function displayLeads(leads) {
             statusClass = "generated";
 
         }
+
+        // ===============================
+        // AI SCORE DISPLAY
+        // ===============================
+
+        let scoreDisplay = "Not Scored";
+
+        if (
+            lead.leadScore !== null &&
+            lead.leadScore !== undefined
+        ) {
+
+            let scoreClass = "score-low";
+
+            if (lead.leadScore >= 70) {
+                scoreClass = "score-high";
+            } else if (lead.leadScore >= 40) {
+                scoreClass = "score-medium";
+            }
+
+            scoreDisplay = `
+                <span class="ai-score ${scoreClass}">
+                    ${lead.leadScore}/100
+                    <span>•</span>
+                    ${lead.leadPriority || ""}
+                </span>
+            `;
+        }
+
+        // ===============================
+        // FOLLOW-UP BUTTON
+        // ===============================
+
+        let followUpButton = "";
+
+        if (lead.emailGenerated && lead.generatedEmail) {
+
+            followUpButton = `
+                <button
+                    class="btn-followup"
+                    onclick="generateFollowUpById('${lead._id}')">
+                    <i class="fa-solid fa-reply"></i>
+                    Follow-Up
+                </button>
+            `;
+        }
+
+        // ===============================
+        // TABLE ROW
+        // ===============================
 
         table += `
             <tr id="row-${lead._id}">
@@ -106,22 +157,71 @@ function displayLeads(leads) {
 
                 </td>
 
+                <!-- AI SCORE -->
+
                 <td>
 
-                    <button
-                        onclick="generateEmailById('${lead._id}')">
-                        Generate Email
-                    </button>
+                    ${scoreDisplay}
 
-                    <button
-                        onclick="editLeadById('${lead._id}')">
-                        Edit
-                    </button>
+                    ${
+                        lead.leadScoreReasons &&
+                        lead.leadScoreReasons.length
+                            ? `
+                                <button
+                                    class="score-reason-btn"
+                                    onclick="showScoreReasons('${lead._id}')">
+                                    Why?
+                                </button>
+                              `
+                            : ""
+                    }
 
-                    <button
-                        onclick="deleteLead('${lead._id}')">
-                        Delete
-                    </button>
+                </td>
+
+                <!-- ACTIONS -->
+
+                <td class="action-cell">
+
+                    <div class="action-buttons">
+
+                        <button
+                            class="btn-generate"
+                            onclick="generateEmailById('${lead._id}')">
+                            <i class="fa-solid fa-envelope"></i>
+                            Generate
+                        </button>
+
+                        <button
+                            class="btn-score"
+                            onclick="scoreLeadById('${lead._id}')">
+                            <i class="fa-solid fa-chart-simple"></i>
+                            AI Score
+                        </button>
+
+                        <button
+                            class="btn-outreach"
+                            onclick="getOutreachRecommendation('${lead._id}')">
+                            <i class="fa-solid fa-lightbulb"></i>
+                            Outreach
+                        </button>
+
+                        ${followUpButton}
+
+                        <button
+                            class="btn-edit"
+                            onclick="editLeadById('${lead._id}')">
+                            <i class="fa-solid fa-pen"></i>
+                            Edit
+                        </button>
+
+                        <button
+                            class="btn-delete"
+                            onclick="deleteLead('${lead._id}')">
+                            <i class="fa-solid fa-trash"></i>
+                            Delete
+                        </button>
+
+                    </div>
 
                 </td>
 
@@ -132,9 +232,7 @@ function displayLeads(leads) {
     table += "</table>";
 
     leadsContainer.innerHTML = table;
-
 }
-
 
 // ===============================
 // GENERATE EMAIL BY ID
@@ -159,6 +257,259 @@ function generateEmailById(id) {
 // EDIT LEAD BY ID
 // ===============================
 
+// ===============================
+// AI LEAD SCORING
+// ===============================
+
+async function scoreLeadById(id) {
+
+    const lead = currentLeads.find(
+        lead => lead._id === id
+    );
+
+    if (!lead) return;
+
+    try {
+
+        const response = await fetch("/score-lead", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify(lead)
+
+        });
+
+        const result = await response.json();
+
+        console.log("Lead Score Response:", result);
+
+        if (!response.ok || !result.success) {
+
+            alert("❌ Failed to score lead");
+
+            return;
+        }
+
+        alert(
+            `AI Lead Score: ${result.score}/100\n` +
+            `Priority: ${result.priority}\n\n` +
+            `Why:\n${result.reasons.join("\n")}`
+        );
+
+        await loadLeadsFromDatabase();
+
+    } catch (error) {
+
+        console.error("❌ Lead Scoring Error:", error);
+
+        alert("❌ Something went wrong while scoring the lead");
+    }
+}
+
+// ===============================
+// SMART OUTREACH RECOMMENDATION
+// ===============================
+
+async function getOutreachRecommendation(id) {
+
+    const lead = currentLeads.find(
+        lead => lead._id === id
+    );
+
+    if (!lead) return;
+
+    try {
+
+        const response = await fetch(
+            "/outreach-recommendation",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify(lead)
+            }
+        );
+
+        const result = await response.json();
+
+        console.log(
+            "Outreach Recommendation:",
+            result
+        );
+
+        if (!response.ok || !result.success) {
+
+            alert("❌ Failed to generate recommendation");
+
+            return;
+        }
+
+        const recommendation =
+            result.recommendation;
+
+        document.getElementById("recommendationChannel").textContent =
+    recommendation.recommendedChannel || "—";
+
+document.getElementById("recommendationTiming").textContent =
+    recommendation.recommendedTiming || "—";
+
+document.getElementById("recommendationAction").textContent =
+    recommendation.suggestedAction || "—";
+
+document.getElementById("recommendationReason").textContent =
+    recommendation.reason || "—";
+
+document.getElementById("outreachModal").style.display = "flex";
+
+    } catch (error) {
+
+        console.error(
+            "❌ Outreach Recommendation Error:",
+            error
+        );
+
+        alert(
+            "❌ Something went wrong while generating the recommendation."
+        );
+    }
+}
+
+// ===============================
+// CLOSE OUTREACH MODAL
+// ===============================
+
+function closeOutreachModal() {
+
+    const modal =
+        document.getElementById("outreachModal");
+
+    if (modal) {
+        modal.style.display = "none";
+    }
+}
+document.addEventListener("click", (event) => {
+
+    const modal =
+        document.getElementById("outreachModal");
+
+    if (
+        modal &&
+        event.target === modal
+    ) {
+        closeOutreachModal();
+    }
+
+});
+// ===============================
+// SHOW AI SCORE REASONS
+// ===============================
+
+// ===============================
+// SHOW AI SCORE REASONS
+// ===============================
+
+function showScoreReasons(id) {
+
+    const lead = currentLeads.find(
+        lead => lead._id === id
+    );
+
+    if (!lead) {
+        return;
+    }
+
+    // Set score
+    document.getElementById("modalLeadScore").textContent =
+        lead.leadScore ?? "—";
+
+    // Set priority
+    const priorityElement =
+        document.getElementById("modalLeadPriority");
+
+    priorityElement.textContent =
+        lead.leadPriority || "—";
+
+    // Set priority styling
+    priorityElement.className = "modal-priority";
+
+    if (lead.leadPriority === "High") {
+        priorityElement.classList.add("score-high");
+    } else if (lead.leadPriority === "Medium") {
+        priorityElement.classList.add("score-medium");
+    } else if (lead.leadPriority === "Low") {
+        priorityElement.classList.add("score-low");
+    }
+
+    // Display reasons
+    const reasonsContainer =
+        document.getElementById("modalScoreReasons");
+
+    if (
+        lead.leadScoreReasons &&
+        lead.leadScoreReasons.length
+    ) {
+
+        reasonsContainer.innerHTML =
+            lead.leadScoreReasons
+                .map(reason => `
+                    <div class="score-reason-item">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>${reason}</span>
+                    </div>
+                `)
+                .join("");
+
+    } else {
+
+        reasonsContainer.innerHTML = `
+            <div class="score-reason-item">
+                <i class="fa-solid fa-circle-info"></i>
+                <span>
+                    No detailed scoring explanation is available.
+                </span>
+            </div>
+        `;
+    }
+
+    // Open modal
+    document.getElementById("scoreModal").style.display =
+        "flex";
+}
+
+// ===============================
+// CLOSE AI SCORE MODAL
+// ===============================
+
+function closeScoreModal() {
+
+    const modal =
+        document.getElementById("scoreModal");
+
+    if (modal) {
+        modal.style.display = "none";
+    }
+}
+
+document.addEventListener("click", (event) => {
+
+    const modal =
+        document.getElementById("scoreModal");
+
+    if (
+        modal &&
+        event.target === modal
+    ) {
+        closeScoreModal();
+    }
+
+});
 function editLeadById(id) {
 
     const lead = currentLeads.find(
@@ -712,3 +1063,210 @@ loadLeadsFromDatabase();
 loadActivity();
 
 loadAnalytics();
+// ===============================
+// GENERATE AI FOLLOW-UP
+// ===============================
+
+async function generateFollowUpById(id) {
+
+    const lead = currentLeads.find(
+        lead => lead._id === id
+    );
+
+    if (!lead) {
+        alert("Lead not found");
+        return;
+    }
+
+    // Make sure an initial email exists
+    if (!lead.generatedEmail) {
+
+        alert(
+            "Please generate the initial email first."
+        );
+
+        return;
+    }
+
+    try {
+
+        const response = await fetch(
+            "/generate-follow-up",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    lead: lead,
+                    previousEmail: lead.generatedEmail
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+
+            alert(
+                data.message ||
+                "Failed to generate follow-up"
+            );
+
+            return;
+        }
+
+        // Update local lead data
+        lead.followUpGenerated = true;
+        lead.followUpEmail = data.followUp;
+
+        // Show generated follow-up
+        document.getElementById("followUpRecipient").textContent =
+    lead.email || "—";
+
+document.getElementById("followUpCompany").textContent =
+    lead.company || "—";
+
+document.getElementById("followUpContent").value =
+    data.followUp;
+
+document.getElementById("followUpModal").style.display =
+    "flex";
+
+        console.log(
+            "✅ Follow-up generated:",
+            data.followUp
+        );
+
+    } catch (error) {
+
+        console.error(
+            "❌ Follow-Up Error:",
+            error
+        );
+
+        alert(
+            "Failed to generate follow-up"
+        );
+    }
+}
+// ===============================
+// CLOSE FOLLOW-UP MODAL
+// ===============================
+
+function closeFollowUpModal() {
+
+    const modal =
+        document.getElementById("followUpModal");
+
+    if (modal) {
+        modal.style.display = "none";
+    }
+}
+document.addEventListener("click", (event) => {
+
+    const modal =
+        document.getElementById("followUpModal");
+
+    if (
+        modal &&
+        event.target === modal
+    ) {
+        closeFollowUpModal();
+    }
+
+});
+// ===============================
+// COPY FOLLOW-UP
+// ===============================
+
+async function copyFollowUp() {
+
+    const content =
+        document.getElementById("followUpContent").value;
+
+    if (!content) {
+        return;
+    }
+
+    try {
+
+        await navigator.clipboard.writeText(content);
+
+        alert("Follow-up copied to clipboard!");
+
+    } catch (error) {
+
+        console.error("❌ Copy Error:", error);
+
+        alert("Could not copy follow-up.");
+    }
+}
+// ===============================
+// SEND FOLLOW-UP EMAIL
+// ===============================
+
+async function sendFollowUp() {
+
+    const email =
+        document.getElementById("followUpRecipient").textContent;
+
+    const body =
+        document.getElementById("followUpContent").value;
+
+    if (!email || !body) {
+        alert("Follow-up email details are missing.");
+        return;
+    }
+
+    try {
+
+        const response = await fetch("/send-email", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                email: email,
+                subject: "Following up",
+                body: body
+            })
+
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+
+            alert(
+                data.message ||
+                "Failed to send follow-up"
+            );
+
+            return;
+        }
+
+        alert("Follow-up sent successfully!");
+
+        closeFollowUpModal();
+
+        // Refresh the dashboard data
+        if (typeof loadLeads === "function") {
+            loadLeads();
+        }
+
+    } catch (error) {
+
+        console.error(
+            "❌ Send Follow-Up Error:",
+            error
+        );
+
+        alert("Failed to send follow-up.");
+    }
+}

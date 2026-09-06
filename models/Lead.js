@@ -42,11 +42,36 @@ const leadSchema = new mongoose.Schema({
         type: String,
         default: ""
     },
+    followUpGenerated: {
+    type: Boolean,
+    default: false
+},
+
+followUpEmail: {
+    type: String,
+    default: ""
+},
+    leadScore: {
+    type: Number,
+    default: null
+},
+
+leadPriority: {
+    type: String,
+    default: null
+},
+
+leadScoreReasons: {
+    type: [String],
+    default: []
+},
 
     createdAt: {
         type: Date,
         default: Date.now
     }
+
+    
 
 });
 
